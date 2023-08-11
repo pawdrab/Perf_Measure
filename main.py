@@ -7,23 +7,22 @@ from tkinter import ttk
 import matplotlib.pyplot as plt
 import os
 
+#########################################################################
+#
+zacznijPomiarV = 0
 
-diffT = 0
-diffV = 0
+zakończPomiarV = 100
+#
+#########################################################################
+
 kmh = 0
 gps = serial.Serial("com6", baudrate=9600)
 pomiarTrwa = False
-def clear_terminal():
-    os.system('cls')
-
-
-
-#pomiar od x do y
-zacznijPomiarV = 10
-zakończPomiarV = 100
-
 x = 1 + zacznijPomiarV
 y = 0.5 + zakończPomiarV
+
+def clear_terminal():
+    os.system('cls')
 
 
 while True:
@@ -37,10 +36,9 @@ while True:
         knots = data[7]
         knots_changed = float(knots)
         seconds = float(data[1])
-        kmh1 = round(knots_changed * 1.852, 2)       
-        kmh = kmh1 + kmh
-
-        print(str(seconds) + "    " + str(pomiarTrwa) + "   " + str(kmh))
+        kmh = round(knots_changed * 1.852, 2)       
+        #kmh = round(kmh1 + kmh,2)#debug only
+        print(str(seconds) + " | " + str(pomiarTrwa) + " | " + str(kmh) + " kmh")
 
         if pomiarTrwa == False and kmh < x:
             print("Gotowy do pomiaru")
@@ -57,15 +55,11 @@ while True:
         if kmh >= y:
             endT = seconds
             endV = kmh
-            print()
-            print("Zakończono pomiar")
-            print("Czas: " + str(zacznijPomiarV) + "-" + str(zakończPomiarV) + " = " + str(round(endT - startT,2)) + " s")
-            print("StartV: " + str(round(startV,2)) + " endV: " + str(round(endV,2)))
+            clear_terminal()
+            print("Zakończono pomiar \n" )
+            print("Start V: " + str(round(startV,2)) + " end V: " + str(round(endV,2)) + "\n")
+            print("Czas " + str(zacznijPomiarV) + "-" + str(zakończPomiarV) + " = " + str(round(endT - startT,2)) + " s\n")
             break
 
-        #print("Prędkość:  " + str(round(kmh,2)) + " km/h  "+ str(data[1]))
         with open("Chip234.txt", "a", encoding="UTF-8") as file:
             file.write("\n"  + " | " + str(data[1]) + " | " + str(round(kmh,2)))
-#
-#
-# root.mainloop()

@@ -1,4 +1,3 @@
-Miejsce zajęte w 81% … Możesz zwolnić miejsce lub uzyskać więcej miejsca na Dysku, w Gmailu i Zdjęciach Google.
 import random
 import tkinter as tk
 import serial
